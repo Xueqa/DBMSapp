@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="blogPostStyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <% include('./public/header.html')%>
+  <div id="mainwrapper">
+
+  <div id="content">
+    <div class="notOnDesktop"> 
+      <!-- This search box is displayed only in mobile and tablet laouts and not in desktop layouts -->
+      <input type="text" placeholder="Search">
+    </div>
+    <section id="mainContent"> 
+      <!--************************************************************************
+    Main Blog content starts here
+    ****************************************************************************-->
+      <h1>
+        <!-- Blog title -->
+Welcome!&nbsp;</h1>
+      <h3>
+        <!-- Tagline -->
+Show items as follow&nbsp;</h3>
+      <div id="bannerImage"></div>
+</section>
+    <section id="sidebar"> 
+      <!--************************************************************************
+    Sidebar starts here. It contains a searchbox, 6 links
+    ****************************************************************************-->
+      <input type="text" placeholder="Search"><img id="searchicon" src="images/searchicon.jpg" height="20" width="20">
+      <div id="adimage"></div>
+      <nav>
+        <ul>
+          <li><a href="link1" title="Link1">Link1</a></li>
+          <li><a href="#" title="Link">Link2</a></li>
+          <li><a href="#" title="Link">Link3</a></li>
+          <li><a href="#" title="Link">Link4</a></li>
+          <li><a href="#" title="Link">Link5</a></li>
+          <li><a href="#" title="Link">Link6</a></li>
+        </ul>
+      </nav>
+    </section>
+</div>
+  <div id="footerbar"> </div>
+</div>
+</body>
+</html>

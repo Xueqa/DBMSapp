@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="link_css.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<% include('./public/header.html')%>
+<div id="mainwrapper">
+<div id="content">
+<section id="mainContent">
+<div id="param">
+    <form action="#" class="form-horizontal">
+        <a> Aisle: </a>
+        <select name="aisle">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+        </select>
+        <a> Department: </a>
+        <select name="department">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+        </select>
+        <a></a>
+        <input type="submit" value="search">
+
+    </form>
+</div>
+        <h3>
+            <!-- Tagline -->
+            Best sellers:&nbsp;</h3>
+</section>
+    <% include('./public/sider.html')%>
+</div>
+</div>
+<% include('./public/footer.html')%>
+</body>
+</html>
