@@ -5,6 +5,7 @@
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="link_css.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 <% include('./public/header.html')%>
@@ -12,20 +13,19 @@
 <div id="content">
 <section id="mainContent">
 <div id="param">
-    <form action="#" class="form-horizontal">
+    <form action="/link1" method="post" class="form-horizontal">
         <a> Aisle: </a>
-        <select name="aisle">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="fiat">Fiat</option>
-            <option value="audi">Audi</option>
+        <select id="aisle" name="aisle">
+
+            <% aisle.forEach(function(aisle){%>
+            <option><%=aisle.Aisle%></option>
+            <% }) %>
         </select>
         <a> Department: </a>
-        <select name="department">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="fiat">Fiat</option>
-            <option value="audi">Audi</option>
+        <select id="department" name="department">
+            <% department.forEach(function(department){%>
+            <option><%=department.Department%></option>
+            <% }) %>
         </select>
         <a></a>
         <input type="submit" value="search">
@@ -35,6 +35,32 @@
         <h3>
             <!-- Tagline -->
             Best sellers:&nbsp;</h3>
+    <table class="table">
+        <tr>
+            <td>
+                Item ID
+            </td>
+            <td>
+                Aisle
+            </td>
+            <td>
+                Department
+            </td>
+        </tr>
+        <% list.forEach(function(list){%>
+        <tr>
+            <td>
+                <%=list.iID%>
+            </td>
+            <td>
+                <%=list.Aisle%>
+            </td>
+            <td>
+                <%=list.Department%>
+            </td>
+        </tr>
+        <% }) %>
+    </table>
 </section>
     <% include('./public/sider.html')%>
 </div>
