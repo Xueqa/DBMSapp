@@ -1,21 +1,41 @@
 {
-  "name": "myapp",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "art-template": "^4.13.2",
-    "ejs": "^3.0.1",
-    "koa": "^2.11.0",
-    "koa-art-template": "^1.1.1",
-    "koa-bodyparser": "^4.3.0",
-    "koa-router": "^8.0.8",
-    "koa-static": "^5.0.0",
-    "koa-views": "^6.2.1"
-  }
+    "name": "tutti",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "author": "tutti",
+    "license": "MIT",
+    "dependencies": {
+        "art-template": "^4.13.2",
+        "axios": "^0.15.3",
+        "joi": "14.3.0",
+        "jsonwebtoken": "8.3.0",
+        "knex": "^0.16.0",
+        "koa": "^2.0.0",
+        "koa-art-template": "^1.1.1",
+        "koa-bodyparser": "^4.2.0",
+        "koa-cors": "0.0.16",
+        "koa-jwt": "3.5.1",
+        "koa-log4": "^2.1.0",
+        "koa-router": "^7.0.1",
+        "koa-static": "^5.0.0",
+        "koa-views": "^6.2.1",
+        "lodash": "^4.17.4",
+        "log4js": "3.0.6",
+        "mkdir-p": "0.0.7",
+        "oracledb": "^4.2.0",
+        "pg": "7.4.3",
+        "pify": "^2.3.0"
+    },
+    "devDependencies": {
+        "babel-eslint": "^7.1.0",
+        "debug": "^2.6.8",
+        "eslint": "^3.9.1",
+        "eslint-config-standard": "^6.2.1",
+        "eslint-plugin-promise": "^3.3.1",
+        "eslint-plugin-standard": "^2.0.1"
+    }
 }
