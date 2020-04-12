@@ -17,7 +17,8 @@ const Router=require('koa-router');
 const router=new Router();
 const funcs=require('./funcs');
 const oraclePool=require('./oraclePool');
-var result=[];
+const Link1Controller=require('./static/controller/Link1Controller');
+const highchartsController=require('./static/controller/highchartsController')
 
 
 router.get('/',async (ctx,next)=>{
@@ -34,21 +35,16 @@ router.get('/main', async (ctx,next)=>{
     await ctx.render("main_page");
     next();
 });
-router.get('/link1',async (ctx,next)=>{
-    var aisle= await oraclePool.initSql('SELECT DISTINCT Zeyuan.aisles.Aisle_name From ZEYUAN.aisles');
-    //console.log(aisle);
-    await ctx.render('Link1',{
-        list:result,
-        aisle:aisle
-    });
-    next();
-});
-router.post('/link1',async (ctx,next)=>{
-    var param=ctx.request.body;
-    result= await funcs.topThreeInAisle(ctx,next);
-    console.log(param);
+router.get('/link1',Link1Controller.getfunc);
+router.post('/link1',Link1Controller.postfunc);
+
+router.get('/test', highchartsController.getfunc);
+router.post('/test', async (ctx,next) =>{
+    var result=ctx.request.body;
     console.log(result);
-    await ctx.redirect('/link1');
+    var message= {name:result.name,
+    data:result.data};
+    ctx.body=JSON.stringify(message);
 })
 app.use(bodyParser())
 app.use(router.routes());
@@ -59,7 +55,12 @@ render(app, {
     debug: process.env.NODE_ENV !== 'production'
 });
 app.use(bodyparser());
-app.use(static(path.join(__dirname,'css')));
+app.use(static(path.join(__dirname,'static')));
+app.use(static(path.join(__dirname)));
+app.use(static(path.join(__dirname,'static/controller')));
+
+app.use(static(path.join(__dirname,'node_modules/highcharts')));
+
 app.use(views("views",{
     map: {
         html: 'ejs'
