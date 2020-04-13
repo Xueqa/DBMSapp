@@ -275,6 +275,44 @@ async function productTrends(ctx, next) {
     
 }
 
+async function productTrends1(ctx, next) {
+    console.log(ctx.request.body)
+    var Obj = {
+        aisle_name: ctx.request.body["aisle_name"],
+        start_date: ctx.request.body['start_date'],
+        end_date: ctx.request.body['end_date']
+        // aisle_name: 'prepared soups salads',
+        // start_date: '2017-01-07 00:00:00',
+        // end_date:'2017-09-07 00:00:00'
+        
+    }
+    
+    var sql=sqlCombine.productTrendSql1(Obj.aisle_name,Obj.start_date,Obj.end_date)
+    
+    var rsp={
+        result :[]
+    }
+    
+    try {
+        
+        rsp.result =await oraclePool.initSql(sql);
+        
+        
+    } 
+    catch(error) {
+        console.log(error);
+        
+    }
+    var result=rsp.result
+
+    //console.log(result.length);
+    await toStr(result)
+    
+    //ctx.body = JSON.stringify(rsp.result)
+    ctx.body = JSON.stringify(result)
+    
+}
+
 async function aisleTrends(ctx, next) {
     console.log(ctx.request.body)
     var Obj = {
@@ -409,5 +447,5 @@ async function userTrends(ctx, next) {
 
 module.exports={
     topThreeInAisle,topThreeInDepartment,orderCountInAisle,selectMostLoyalCustomer,selectMostDiverseCustomer,
-    selectReorderMostCustomer,aisleTrends,productTrends,orderTrends,reorderTrends,userTrends
+    selectReorderMostCustomer,aisleTrends,productTrends,orderTrends,reorderTrends,userTrends,productTrends1
 }

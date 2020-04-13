@@ -164,6 +164,20 @@ function productTrendSql(aisle_name,start_date,end_date){
 
 }
 
+function productTrendSql1(aisle_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, Aisle_NAME, EXTRACT(MONTH FROM ORDER_DATE) as Month,EXTRACT(Day FROM ORDER_DATE) as day ';
+    sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
+    sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
+    sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
+    sql+="where aisle_name='"+aisle_name+"'";
+    sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE),Aisle_NAME ORDER BY EXTRACT(MONTH FROM ORDER_DATE),EXTRACT(day FROM ORDER_DATE), AISLE_NAME';
+    console.log(sql);
+    return sql;
+
+}
+
 function orderTrendSql(aisle_name,department_name,start_date,end_date){
     sql='SELECT COUNT(*) as Totalnumber, ORDER_ID, ORDER_DATE ';
     sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
@@ -215,5 +229,5 @@ function userTrendSql(user_id,aisle_name,department_name,start_date,end_date){
 module.exports={
     topKSql,selectAll,selectBestThreeInOneAisle,orderNumberOfMonth,selectBestThreeInOneDepartment,orderNumberForAisle,
     selectMostOrderUser,selectOrderEveryDepartUser,selectReorderMostUser,aisleTrendSql,productTrendSql,
-    orderTrendSql,reorderTrendSql,userTrendSql
+    orderTrendSql,reorderTrendSql,userTrendSql,productTrendSql1
 };
