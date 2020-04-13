@@ -7,14 +7,14 @@ function topKSql(tables,attribute,id,k){
     var fromSql=sql.from(tables);
     var whereSql=sql.topK(id,k);
     const sqlquery=selectSql+fromSql+whereSql;
-    module.exports.sqlquery = sqlquery;
+    module.exports.sqlquery = sqlquery; 
     return sqlquery;
 }
 function selectAll(tables,attribute){
     var selectSql=sql.select(attribute);
     var fromSql=sql.from(tables);
     const sqlquery=selectSql+fromSql;
-    module.exports.sqlquery = sqlquery;
+    module.exports.sqlquery = sqlquery; 
     return sqlquery;
 }
 
@@ -95,8 +95,125 @@ function orderNumberOfMonth(){
     sql+="order by week, totalNumber desc ";
     return sql
 }
-//function selectForAisle(table)
+
+function selectOrderEveryDepartUser(start_date,end_date){
+    sqlquery='SELECT * ';
+    sqlquery+='FROM (SELECT USER_ID, COUNT(DISTINCT DEPARTMENT_ID) as Totalnumber ';
+    sqlquery+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."CONTAIN"  NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."PUT_ON" NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."PRODUCTS"  NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."AISLES" NATURAL JOIN "ZEYUAN"."MAKE" ';
+    sqlquery+=" where zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sqlquery+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sqlquery+=' group by Zeyuan.make.user_id';
+    sqlquery+=' order by Totalnumber desc) '
+    sqlquery+=' where Totalnumber>=20'
+    console.log(sqlquery);
+    return sqlquery;
+}
+
+function selectReorderMostUser(aisle_name,start_date,end_date){
+    sqlquery='SELECT * ';
+    sqlquery+='FROM (SELECT USER_ID, COUNT(*)) as Totalnumber ';
+    sqlquery+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."CONTAIN"  NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."PUT_ON" NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."PRODUCTS"  NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN ';
+    sqlquery+='"ZEYUAN"."AISLES" NATURAL JOIN "ZEYUAN"."MAKE" ';
+    sqlquery+="WHERE AISLE_NAME = '"+aisle_name+"'" 
+    sqlquery+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sqlquery+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sqlquery+=' and reordered =1';
+    sqlquery+=' group by user_id ';
+    sqlquery+=' order by Totalnumber DESC) ';
+    sqlquery+=' WHERE rownum <= 5';
+    console.log(sqlquery);
+    return sqlquery;
+}
+
+function aisleTrendSql(department_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, Aisle_NAME, Month(ORDER_DATE), DAY(ORDER_DATE) ';
+    sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
+    sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
+    sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
+    sql+="where department_name='"+department_name+"'";
+    sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=' GROUP BY ORDER_DATE, aisle_NAME ORDER BY ORDER_DATE, aisle_NAME';
+    console.log(sql);
+    return sql;
+
+}
+
+function productTrendSql(aisle_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, Aisle_NAME, EXTRACT(MONTH FROM ORDER_DATE) as createMonth ';
+    sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
+    sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
+    sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
+    sql+="where aisle_name='"+aisle_name+"'";
+    sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), Aisle_NAME ORDER BY EXTRACT(MONTH FROM ORDER_DATE), AISLE_NAME';
+    console.log(sql);
+    return sql;
+
+}
+
+function orderTrendSql(aisle_name,department_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, ORDER_ID, ORDER_DATE ';
+    sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
+    sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
+    sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
+    sql+="where aisle_name='"+aisle_name+"'";
+    sql+=" and department_name='"+department_name+"'";
+    sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=' GROUP BY ORDER_DATE, ORDER_ID ORDER BY ORDER_DATE, ORDER_ID';
+    console.log(sql);
+    return sql;
+
+}
+
+function reorderTrendSql(aisle_name,department_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, ORDER_ID, ORDER_DATE ';
+    sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
+    sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
+    sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
+    sql+="where aisle_name='"+aisle_name+"'";
+    sql+=" and department_name='"+department_name+"'";
+    sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=' and reordered=1'
+    sql+=' GROUP BY ORDER_DATE, ORDER_ID ORDER BY ORDER_DATE, ORDER_ID';
+    console.log(sql);
+    return sql;
+
+}
+
+function userTrendSql(user_id,aisle_name,department_name,start_date,end_date){
+    sql='SELECT USER_ID, COUNT(*) as Totalnumber, ORDER_ID, ORDER_DATE ';
+    sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
+    sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
+    sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" NATURAL JOIN "ZEYUAN"."MAKE"';
+    sql+="where aisle_name='"+aisle_name+"'";
+    sql+=" and department_name='"+department_name+"'";
+    sql+=" and user_id='"+user_id+"'";
+    sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
+    sql+=' and reordered=1'
+    sql+=' GROUP BY ORDER_DATE, ORDER_ID, USER_ID ORDER BY ORDER_DATE, ORDER_ID, USER_ID';
+    console.log(sql);
+    return sql;
+
+}
+
 module.exports={
     topKSql,selectAll,selectBestThreeInOneAisle,orderNumberOfMonth,selectBestThreeInOneDepartment,orderNumberForAisle,
-    selectMostOrderUser
+    selectMostOrderUser,selectOrderEveryDepartUser,selectReorderMostUser,aisleTrendSql,productTrendSql,
+    orderTrendSql,reorderTrendSql,userTrendSql
 };
