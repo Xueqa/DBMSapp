@@ -7,14 +7,14 @@ function topKSql(tables,attribute,id,k){
     var fromSql=sql.from(tables);
     var whereSql=sql.topK(id,k);
     const sqlquery=selectSql+fromSql+whereSql;
-    module.exports.sqlquery = sqlquery; 
+    module.exports.sqlquery = sqlquery;
     return sqlquery;
 }
 function selectAll(tables,attribute){
     var selectSql=sql.select(attribute);
     var fromSql=sql.from(tables);
     const sqlquery=selectSql+fromSql;
-    module.exports.sqlquery = sqlquery; 
+    module.exports.sqlquery = sqlquery;
     return sqlquery;
 }
 

@@ -17,8 +17,12 @@ const Router=require('koa-router');
 const router=new Router();
 const funcs=require('./funcs');
 const oraclePool=require('./oraclePool');
-const Link1Controller=require('./static/controller/Link1Controller');
-const highchartsController=require('./static/controller/highchartsController')
+const BestSellerController=require('./static/controller/BestSellerController');
+const highchartsController=require('./static/controller/highchartsController');
+const TrendofOrderInAisleController=require('./static/controller/TrendofOrderInAisleController');
+const TrendofProductController=require('./static/controller/TrendofProductController');
+const TrendofReorderController=require('./static/controller/TrendofReorderController');
+
 
 
 router.get('/',async (ctx,next)=>{
@@ -35,17 +39,21 @@ router.get('/main', async (ctx,next)=>{
     await ctx.render("main_page");
     next();
 });
-router.get('/link1',Link1Controller.getfunc);
-router.post('/link1',Link1Controller.postfunc);
+router.get('/bestSeller',BestSellerController.getfunc);
+router.post('/bestSeller',BestSellerController.postfunc);
 
 router.get('/test', highchartsController.getfunc);
-router.post('/test', async (ctx,next) =>{
-    var result=ctx.request.body;
-    console.log(result);
-    var message= {name:result.name,
-    data:result.data};
-    ctx.body=JSON.stringify(message);
-})
+router.post('/test', highchartsController.postfunc);
+
+router.get('/trendofOrderA',TrendofOrderInAisleController.getfunc);
+router.post('/trendofOrderA',TrendofOrderInAisleController.postfunc);
+
+router.get('/trendofPro',TrendofProductController.getfunc);
+router.post('/trendofPro',TrendofProductController.postfunc);
+
+router.get('/trendofRe',TrendofReorderController.getfunc);
+router.post('/trendofRe',TrendofReorderController.postfunc);
+
 app.use(bodyParser())
 app.use(router.routes());
 
