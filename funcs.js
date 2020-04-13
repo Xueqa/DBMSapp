@@ -9,26 +9,26 @@ async function topThreeInAisle(ctx, next) {
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.selectBestThreeInOneAisle(Obj.aisle_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result :[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
-    ctx.body = JSON.stringify(rsp.result)
+    return rsp.result;
+    //ctx.body = JSON.stringify(rsp.result)
     //ctx.body=rsp.result;
 }
 
@@ -41,24 +41,24 @@ async function topThreeInDepartment(ctx, next) {
         // department_name: 'frozen',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.selectBestThreeInOneDepartment(Obj.department_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result :[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     ctx.body = JSON.stringify(rsp.result)
     //ctx.body=rsp.result;
@@ -73,24 +73,24 @@ async function orderCountInAisle(ctx, next) {
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.orderNumberForAisle(Obj.aisle_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result:[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     ctx.body = JSON.stringify(rsp.result[0])
     //ctx.body=rsp.result;
@@ -102,53 +102,53 @@ async function selectMostLoyalCustomer(ctx, next) {
         start_date: ctx.request.body['start_date'],
         end_date: ctx.request.body['end_date']
         // start_date: '2017-01-07 00:00:00',
-        // end_date:'2017-09-07 00:00:00' 
+        // end_date:'2017-09-07 00:00:00'
     }
-    
+
     var sql=sqlCombine.selectMostOrderUser(Obj.start_date,Obj.end_date);
-    
+
     var rsp={
         result:[]
     }
     console.log(rsp.result);
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     ctx.body = JSON.stringify(rsp.result)
     //ctx.body=rsp.result;
 }
 
 async function selectMostDiverseCustomer(ctx, next) {
-    
+
     var Obj = {
         start_date: ctx.request.body['start_date'],
         end_date: ctx.request.body['end_date']
         // start_date: '2017-01-07 00:00:00',
-        // end_date:'2017-09-07 00:00:00' 
+        // end_date:'2017-09-07 00:00:00'
     }
-    
+
     var sql=sqlCombine.selectOrderEveryDepartUser(Obj.start_date,Obj.end_date);
-    
+
     var rsp={
         result:[]
     }
     console.log(rsp.result);
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     ctx.body = JSON.stringify(rsp.result)
     //ctx.body=rsp.result;
@@ -163,31 +163,30 @@ async function selectReorderMostCustomer(ctx, next) {
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.selectReorderMostUser(Obj.aisle_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result:[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     ctx.body = JSON.stringify(rsp.result)
     //ctx.body=rsp.result;
 }
 
-async function toStr(result){for(i=0;i<result.length;i++){
-    console.log(result[i][2]);
+function toStr(result){for(i=0;i<result.length;i++){
     switch (result[i][2]) {
         case 1:
             result[i][2]="Jan";
@@ -222,7 +221,7 @@ async function toStr(result){for(i=0;i<result.length;i++){
             result[i][2]="Oct";
             break;
 
-        case 1:
+        case 11:
             result[i][2]="Nov";
             break;
 
@@ -234,83 +233,81 @@ async function toStr(result){for(i=0;i<result.length;i++){
             newValue = value;
             break;
     };
-   
+
 }
 }
-async function productTrends(ctx, next) {
-    console.log(ctx.request.body)
+async function productTrendsbyMonth(aisle_name, start_date,end_date) {
     var Obj = {
-        aisle_name: ctx.request.body["aisle_name"],
-        start_date: ctx.request.body['start_date'],
-        end_date: ctx.request.body['end_date']
+        aisle_name,
+        start_date,
+        end_date
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.productTrendSql(Obj.aisle_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result :[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     var result=rsp.result
 
+
     //console.log(result.length);
-    await toStr(result)
-    
+    toStr(result)
+    return result;
+
     //ctx.body = JSON.stringify(rsp.result)
-    ctx.body = JSON.stringify(result)
-    
+    //ctx.body = JSON.stringify(result)
+
 }
 
-async function productTrends1(ctx, next) {
-    console.log(ctx.request.body)
+async function productTrendsbyDay(aisle_name, start_date,end_date) {
     var Obj = {
-        aisle_name: ctx.request.body["aisle_name"],
-        start_date: ctx.request.body['start_date'],
-        end_date: ctx.request.body['end_date']
+        aisle_name,
+        start_date,
+        end_date
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.productTrendSql1(Obj.aisle_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result :[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
-    }
-    var result=rsp.result
 
+    }
+    var result=rsp.result;
+    toStr(result);
+    return result;
     //console.log(result.length);
-    await toStr(result)
-    
     //ctx.body = JSON.stringify(rsp.result)
-    ctx.body = JSON.stringify(result)
-    
+    //ctx.body = JSON.stringify(result)
+
 }
 
 async function aisleTrends(ctx, next) {
@@ -322,24 +319,24 @@ async function aisleTrends(ctx, next) {
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.aisleTrendSql(Obj.department_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result :[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     ctx.body = JSON.stringify(rsp.result)
     //ctx.body=rsp.result;
@@ -355,24 +352,24 @@ async function orderTrends(ctx, next) {
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.orderTrendSql(Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result :[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     ctx.body = JSON.stringify(rsp.result)
     //ctx.body=rsp.result;
@@ -388,24 +385,24 @@ async function reorderTrends(ctx, next) {
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.reorderTrendSql(Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result :[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     ctx.body = JSON.stringify(rsp.result)
     //ctx.body=rsp.result;
@@ -422,24 +419,24 @@ async function userTrends(ctx, next) {
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
-        
+
     }
-    
+
     var sql=sqlCombine.userTrendSql(Obj.user_id,Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
-    
+
     var rsp={
         result :[]
     }
-    
+
     try {
-        
+
         rsp.result =await oraclePool.initSql(sql);
-        
-        
-    } 
+
+
+    }
     catch(error) {
         console.log(error);
-        
+
     }
     ctx.body = JSON.stringify(rsp.result)
     //ctx.body=rsp.result;
@@ -447,5 +444,5 @@ async function userTrends(ctx, next) {
 
 module.exports={
     topThreeInAisle,topThreeInDepartment,orderCountInAisle,selectMostLoyalCustomer,selectMostDiverseCustomer,
-    selectReorderMostCustomer,aisleTrends,productTrends,orderTrends,reorderTrends,userTrends,productTrends1
+    selectReorderMostCustomer,aisleTrends,productTrendsbyMonth,orderTrends,reorderTrends,userTrends,productTrendsbyDay
 }

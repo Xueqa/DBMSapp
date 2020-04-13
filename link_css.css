@@ -28,16 +28,20 @@ table tr:nth-child(even)
 }
 
 #param {
-    width: 100%;
+    width: 120%;
     height: 50px;
     background-color: #f2f2f2;
-    text-align: center;
 }
 
 
-#param select {
+#param #aisle {
     padding-left: 10px;
-    width: 150px;
+    width: 140px;
+    height: 30px;
+}
+#param #method {
+    padding-left: 10px;
+    width: 100px;
     height: 30px;
 }
 #param a{

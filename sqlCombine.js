@@ -7,14 +7,14 @@ function topKSql(tables,attribute,id,k){
     var fromSql=sql.from(tables);
     var whereSql=sql.topK(id,k);
     const sqlquery=selectSql+fromSql+whereSql;
-    module.exports.sqlquery = sqlquery; 
+    module.exports.sqlquery = sqlquery;
     return sqlquery;
 }
 function selectAll(tables,attribute){
     var selectSql=sql.select(attribute);
     var fromSql=sql.from(tables);
     const sqlquery=selectSql+fromSql;
-    module.exports.sqlquery = sqlquery; 
+    module.exports.sqlquery = sqlquery;
     return sqlquery;
 }
 
@@ -125,7 +125,7 @@ function selectReorderMostUser(aisle_name,start_date,end_date){
     sqlquery+='"ZEYUAN"."PRODUCTS"  NATURAL JOIN ';
     sqlquery+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN ';
     sqlquery+='"ZEYUAN"."AISLES" NATURAL JOIN "ZEYUAN"."MAKE" ';
-    sqlquery+="WHERE AISLE_NAME = '"+aisle_name+"'" 
+    sqlquery+="WHERE AISLE_NAME = '"+aisle_name+"'"
     sqlquery+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     sqlquery+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
     sqlquery+=' and reordered =1';
