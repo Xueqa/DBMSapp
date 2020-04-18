@@ -188,46 +188,46 @@ async function selectReorderMostCustomer(ctx, next) {
 
 async function toStr(result){for(i=0;i<result.length;i++){
     //console.log(result[i][2]);
-    switch (result[i][2]) {
+    switch (result[i][1]) {
         case 1:
-            result[i][2]="Jan";
+            result[i][1]="Jan";
             break;
 
         case 2:
-            result[i][2]="Feb";
+            result[i][1]="Feb";
             break;
         case 3:
-            result[i][2]="Mar";
+            result[i][1]="Mar";
             break;
         case 4:
-            result[i][2]="Apr";
+            result[i][1]="Apr";
             break;
         case 5:
-            result[i][2]="May";
+            result[i][1]="May";
             break;
 
         case 6:
-            result[i][2]="Jun";
+            result[i][1]="Jun";
             break;
         case 7:
-            result[i][2]="Jul";
+            result[i][1]="Jul";
             break;
         case 8:
-            result[i][2]="Aug";
+            result[i][1]="Aug";
             break;
         case 9:
-            result[i][2]="Sep";
+            result[i][1]="Sep";
             break;
         case 10:
-            result[i][2]="Oct";
+            result[i][1]="Oct";
             break;
 
-        case 1:
-            result[i][2]="Nov";
+        case 11:
+            result[i][1]="Nov";
             break;
 
         case 12:
-            result[i][2]="Dec";
+            result[i][1]="Dec";
             break;
 
         default:
@@ -355,7 +355,6 @@ async function orderTrendsByMonth(ctx, next) {
     console.log(ctx.request.body)
     var Obj = {
         aisle_name: ctx.request.body["aisle_name"],
-        department_name: ctx.request.body["department_name"],
         start_date: ctx.request.body['start_date'],
         end_date: ctx.request.body['end_date']
         // aisle_name: 'prepared soups salads',
@@ -364,7 +363,7 @@ async function orderTrendsByMonth(ctx, next) {
         
     }
     
-    var sql=sqlCombine.orderTrendSql(Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.orderTrendSql(Obj.aisle_name,Obj.start_date,Obj.end_date)
     
     var rsp={
         result :[]
@@ -393,7 +392,6 @@ async function orderTrendsByDay(ctx, next) {
     console.log(ctx.request.body)
     var Obj = {
         aisle_name: ctx.request.body["aisle_name"],
-        department_name: ctx.request.body["department_name"],
         start_date: ctx.request.body['start_date'],
         end_date: ctx.request.body['end_date']
         // aisle_name: 'prepared soups salads',
@@ -402,7 +400,7 @@ async function orderTrendsByDay(ctx, next) {
         
     }
     
-    var sql=sqlCombine.orderTrendSql(Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.orderTrendSql1(Obj.aisle_name,Obj.start_date,Obj.end_date)
     
     var rsp={
         result :[]
@@ -431,7 +429,6 @@ async function reorderTrendsByMonth(ctx, next) {
     console.log(ctx.request.body)
     var Obj = {
         aisle_name: ctx.request.body["aisle_name"],
-        department_name: ctx.request.body["department_name"],
         start_date: ctx.request.body['start_date'],
         end_date: ctx.request.body['end_date']
         // aisle_name: 'prepared soups salads',
@@ -440,7 +437,7 @@ async function reorderTrendsByMonth(ctx, next) {
         
     }
     
-    var sql=sqlCombine.reorderTrendSql(Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.reorderTrendSql(Obj.aisle_name,Obj.start_date,Obj.end_date)
     
     var rsp={
         result :[]
@@ -470,7 +467,6 @@ async function reorderTrendsByDay(ctx, next) {
     console.log(ctx.request.body)
     var Obj = {
         aisle_name: ctx.request.body["aisle_name"],
-        department_name: ctx.request.body["department_name"],
         start_date: ctx.request.body['start_date'],
         end_date: ctx.request.body['end_date']
         // aisle_name: 'prepared soups salads',
@@ -479,7 +475,7 @@ async function reorderTrendsByDay(ctx, next) {
         
     }
     
-    var sql=sqlCombine.reorderTrendSql1(Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.reorderTrendSql1(Obj.aisle_name,Obj.start_date,Obj.end_date)
     
     var rsp={
         result :[]
@@ -509,8 +505,6 @@ async function userTrendsByMonth(ctx, next) {
     console.log(ctx.request.body)
     var Obj = {
         user_id: ctx.request.body["user_id"],
-        aisle_name: ctx.request.body["aisle_name"],
-        department_name: ctx.request.body["department_name"],
         start_date: ctx.request.body['start_date'],
         end_date: ctx.request.body['end_date']
         // aisle_name: 'prepared soups salads',
@@ -519,7 +513,7 @@ async function userTrendsByMonth(ctx, next) {
         
     }
     
-    var sql=sqlCombine.userTrendSql(Obj.user_id,Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.userTrendSql(Obj.user_id,Obj.start_date,Obj.end_date)
     
     var rsp={
         result :[]
@@ -548,8 +542,6 @@ async function userTrendsByDay(ctx, next) {
     console.log(ctx.request.body)
     var Obj = {
         user_id: ctx.request.body["user_id"],
-        aisle_name: ctx.request.body["aisle_name"],
-        department_name: ctx.request.body["department_name"],
         start_date: ctx.request.body['start_date'],
         end_date: ctx.request.body['end_date']
         // aisle_name: 'prepared soups salads',
@@ -558,7 +550,7 @@ async function userTrendsByDay(ctx, next) {
         
     }
     
-    var sql=sqlCombine.userTrendSql1(Obj.user_id,Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.userTrendSql1(Obj.user_id,Obj.start_date,Obj.end_date)
     
     var rsp={
         result :[]

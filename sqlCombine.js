@@ -151,124 +151,116 @@ function aisleTrendSql(department_name,start_date,end_date){
 }
 
 function productTrendSql(aisle_name,start_date,end_date){
-    sql='SELECT COUNT(*) as Totalnumber, Aisle_NAME, EXTRACT(MONTH FROM ORDER_DATE) as Month ';
+    sql='SELECT COUNT(*) as Totalnumber,  EXTRACT(MONTH FROM ORDER_DATE) as Month ';
     sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
     sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
     sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
     sql+="where aisle_name='"+aisle_name+"'";
     sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
-    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), Aisle_NAME ORDER BY EXTRACT(MONTH FROM ORDER_DATE), AISLE_NAME';
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), ORDER BY EXTRACT(MONTH FROM ORDER_DATE)';
     console.log(sql);
     return sql;
 
 }
 
 function productTrendSql1(aisle_name,start_date,end_date){
-    sql='SELECT COUNT(*) as Totalnumber, Aisle_NAME, EXTRACT(MONTH FROM ORDER_DATE) as Month,EXTRACT(Day FROM ORDER_DATE) as day ';
+    sql='SELECT COUNT(*) as Totalnumber, EXTRACT(MONTH FROM ORDER_DATE) as Month,EXTRACT(Day FROM ORDER_DATE) as day ';
     sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
     sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
     sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
     sql+="where aisle_name='"+aisle_name+"'";
     sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
-    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE),Aisle_NAME ORDER BY EXTRACT(MONTH FROM ORDER_DATE),EXTRACT(day FROM ORDER_DATE), AISLE_NAME';
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE) ORDER BY EXTRACT(MONTH FROM ORDER_DATE),EXTRACT(day FROM ORDER_DATE)';
     console.log(sql);
     return sql;
 
 }
 
-function orderTrendSql(aisle_name,department_name,start_date,end_date){
-    sql='SELECT COUNT(*) as Totalnumber, ORDER_ID, EXTRACT(MONTH FROM ORDER_DATE) as Month ';
+function orderTrendSql(aisle_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, EXTRACT(MONTH FROM ORDER_DATE) as Month ';
     sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
     sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
     sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
     sql+="where aisle_name='"+aisle_name+"'";
-    sql+=" and department_name='"+department_name+"'";
     sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
-    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), ORDER_ID ORDER BY EXTRACT(MONTH FROM ORDER_DATE), ORDER_ID';
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE) ORDER BY EXTRACT(MONTH FROM ORDER_DATE)';
     console.log(sql);
     return sql;
 
 }
 
-function orderTrendSql1(aisle_name,department_name,start_date,end_date){
-    sql='SELECT COUNT(*) as Totalnumber, ORDER_ID, EXTRACT(MONTH FROM ORDER_DATE) as Month,EXTRACT(Day FROM ORDER_DATE) as day ';
+function orderTrendSql1(aisle_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, EXTRACT(MONTH FROM ORDER_DATE) as Month,EXTRACT(Day FROM ORDER_DATE) as day ';
     sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
     sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
     sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
     sql+="where aisle_name='"+aisle_name+"'";
-    sql+=" and department_name='"+department_name+"'";
     sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
-    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE), ORDER_ID ORDER BY  EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE), ORDER_ID';
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE) ORDER BY  EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE)';
     console.log(sql);
     return sql;
 
 }
 
-function reorderTrendSql(aisle_name,department_name,start_date,end_date){
-    sql='SELECT COUNT(*) as Totalnumber, PRODUCT_NAME, EXTRACT(MONTH FROM ORDER_DATE) as Month ';
+function reorderTrendSql(aisle_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, EXTRACT(MONTH FROM ORDER_DATE) as Month ';
     sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
     sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
     sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
     sql+="where aisle_name='"+aisle_name+"'";
-    sql+=" and department_name='"+department_name+"'";
     sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=' and reordered=1'
-    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE) , PRODUCT_NAME ORDER BY EXTRACT(MONTH FROM ORDER_DATE), PRODUCT_NAME';
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE)  ORDER BY EXTRACT(MONTH FROM ORDER_DATE)';
     console.log(sql);
     return sql;
 
 }
 
-function reorderTrendSql1(aisle_name,department_name,start_date,end_date){
-    sql='SELECT COUNT(*) as Totalnumber, ORDER_ID, EXTRACT(MONTH FROM ORDER_DATE) as Month,EXTRACT(Day FROM ORDER_DATE) as day ';
+function reorderTrendSql1(aisle_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, EXTRACT(MONTH FROM ORDER_DATE) as Month,EXTRACT(Day FROM ORDER_DATE) as day ';
     sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
     sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
     sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
-    sql+="where aisle_name='"+aisle_name+"'";
-    sql+=" and department_name='"+department_name+"'";
+    sql+=" where aisle_name='"+aisle_name+"'";   
     sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=' and reordered=1'
-    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE),EXTRACT(Day FROM ORDER_DATE), PRODUCT_NAME ORDER BY EXTRACT(MONTH FROM ORDER_DATE),EXTRACT(Day FROM ORDER_DATE), PRODUCT_NAME';
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE),EXTRACT(Day FROM ORDER_DATE) ORDER BY EXTRACT(MONTH FROM ORDER_DATE),EXTRACT(Day FROM ORDER_DATE)';
     console.log(sql);
     return sql;
 
 }
 
-function userTrendSql(user_id,aisle_name,department_name,start_date,end_date){
-    sql='SELECT USER_ID, COUNT(*) as Totalnumber, ORDER_ID, EXTRACT(MONTH FROM ORDER_DATE) as Month ';
+function userTrendSql(user_id,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, EXTRACT(MONTH FROM ORDER_DATE) as Month ';
     sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
     sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
     sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" NATURAL JOIN "ZEYUAN"."MAKE"';
-    sql+="where aisle_name='"+aisle_name+"'";
-    sql+=" and department_name='"+department_name+"'";
-    sql+=" and user_id='"+user_id+"'";
+    sql+=" where user_id='"+user_id+"'";
     sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=' and reordered=1'
-    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), ORDER_ID, USER_ID ORDER BY EXTRACT(MONTH FROM ORDER_DATE), ORDER_ID, USER_ID';
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE) ORDER BY EXTRACT(MONTH FROM ORDER_DATE)';
     console.log(sql);
     return sql;
 
 }
 
-function userTrendSql1(user_id,aisle_name,department_name,start_date,end_date){
-    sql='SELECT USER_ID, COUNT(*) as Totalnumber, ORDER_ID, EXTRACT(MONTH FROM ORDER_DATE) as Month, EXTRACT(Day FROM ORDER_DATE) as day ';
+function userTrendSql1(user_id,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, EXTRACT(MONTH FROM ORDER_DATE) as Month, EXTRACT(Day FROM ORDER_DATE) as day ';
     sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
     sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
     sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" NATURAL JOIN "ZEYUAN"."MAKE"';
-    sql+="where aisle_name='"+aisle_name+"'";
-    sql+=" and department_name='"+department_name+"'";
-    sql+=" and user_id='"+user_id+"'";
+    sql+="where user_id='"+user_id+"'";
     sql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
     sql+=' and reordered=1'
-    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE), ORDER_ID, USER_ID ORDER BY EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE), ORDER_ID, USER_ID';
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE) ORDER BY EXTRACT(MONTH FROM ORDER_DATE), EXTRACT(Day FROM ORDER_DATE)';
     console.log(sql);
     return sql;
 

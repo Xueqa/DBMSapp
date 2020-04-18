@@ -9,7 +9,7 @@ router.post('/result/orderTrendByDay',funcs.orderTrendsByDay);//query2 by dayThe
 router.post('/result/reorderTrendByMonth',funcs.reorderTrendsByMonth);//query3 by month The trend of reorders in a selected aisle over a selected time period
 router.post('/result/reorderTrendByDay',funcs.reorderTrendsByDay);//query3 by dayThe trend of reorders in a selected aisle over a selected time period
 router.post('/result/userTrendByMonth',funcs.userTrendsByMonth);//query4 by month The trend of the orders made by a selected user over a selected time period
-router.post('/result/userTrendByMonth',funcs.userTrendsByDay);//query4 by day The trend of the orders made by a selected user over a selected time period
+router.post('/result/userTrendByDay',funcs.userTrendsByDay);//query4 by day The trend of the orders made by a selected user over a selected time period
 router.post('/result/topfiveinaisle',funcs.topFiveInAisle);//query5 best seller aisle version
 router.post('/result/topfiveindepartment',funcs.topFiveInDepartment);//query5 best seller department version
 router.post('/result/selectmostloyalcustomer',funcs.selectMostLoyalCustomer);// query6 Most loyal customer
