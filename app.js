@@ -22,7 +22,10 @@ const highchartsController=require('./static/controller/highchartsController');
 const TrendofOrderInAisleController=require('./static/controller/TrendofOrderInAisleController');
 const TrendofProductController=require('./static/controller/TrendofProductController');
 const TrendofReorderController=require('./static/controller/TrendofReorderController');
-
+const TrendofOrderUserController=require('./static/controller/TrendofOrderUserController');
+const TheMostDivController=require('./static/controller/TheMostDivController');
+const TheMostLoyalController=require('./static/controller/TheMostLoyalController');
+const PureGrowthController=require('./static/controller/PureGrowthController');
 
 
 router.get('/',async (ctx,next)=>{
@@ -54,6 +57,18 @@ router.post('/trendofPro',TrendofProductController.postfunc);
 router.get('/trendofRe',TrendofReorderController.getfunc);
 router.post('/trendofRe',TrendofReorderController.postfunc);
 
+router.get('/trendofOrderU',TrendofOrderUserController.getfunc);
+router.post('/trendofOrderU',TrendofOrderUserController.postfunc);
+
+router.get('/TheMDC',TheMostDivController.getfunc);
+router.post('/TheMDC',TheMostDivController.postfunc);
+
+router.get('/TheMLU',TheMostLoyalController.getfunc);
+router.post('/TheMLU',TheMostLoyalController.postfunc);
+
+router.get('/PureGrowth',PureGrowthController.getfunc);
+router.post('/PureGrowth',PureGrowthController.postfunc);
+
 app.use(bodyParser())
 app.use(router.routes());
 
@@ -64,6 +79,8 @@ render(app, {
 });
 app.use(bodyparser());
 app.use(static(path.join(__dirname,'static')));
+app.use(static(path.join(__dirname,'static/images')));
+
 app.use(static(path.join(__dirname)));
 app.use(static(path.join(__dirname,'static/controller')));
 

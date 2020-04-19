@@ -19,14 +19,8 @@
         <section id="mainContent">
             <div id="param">
                 <form id="form1" class="form-horizontal">
-                    <a> Aisle: </a>
-                    <select id="aisle" name="aisle_name">
-
-                        <% aisle.forEach(function(aisle){%>
-                        <option><%=aisle[0]%></option>
-                        <% }) %>
-                    </select>
-
+                    <a> User Id: </a>
+                    <input type="text" name="user_id" value="71">
                     <a> Start Date: </a>
                     <input type="date" name="start_date" value="2017-06-01" min="2017-01-01" max="2017-12-31"/>
                     <a> End Date: </a>
@@ -41,7 +35,7 @@
             </div>
             <h3>
                 <!-- Tagline -->
-                The trend of the total number of sold products in a selected aisle over a selected time period:
+                The trend of the orders made by a selected user over a selected time period:
                 &nbsp;</h3>
             <figure class="highcharts-figure">
                 <div id="container"></div>
@@ -65,7 +59,7 @@
         xAxis: [],
         yAxis: {
             title: {
-                text: 'Total number of Reorders'
+                text: 'Total number of Orders'
             }
         },
         plotOptions: {
@@ -84,7 +78,7 @@
         option.title={text:''};
         option.series=[];
         $.ajax({
-            url:'/trendofRe',
+            url:'/trendofOrderU',
             type:'post',
             dataType: 'json',
             data: $('#form1').serialize()

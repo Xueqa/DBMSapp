@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="link_css.css" rel="stylesheet" type="text/css">
+    <script src="TheMostLoyalController.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<% include('./public/header.html')%>
+<div id="mainwrapper">
+    <div id="content">
+        <section id="mainContent">
+            <div id="param">
+                <form id="form1" onsubmit="return false" action="##" method="post" class="form-horizontal">
+                    <a> Start Date: </a>
+                    <input type="date" name="start_date" value="2017-06-01" min="2017-01-01" max="2017-12-31"/>
+                    <a> End Date: </a>
+                    <input type="date" name="end_date" value="2017-08-01" min="2017-01-01" max="2017-12-31"/>
+                    <a></a>
+                    <input  type="button" value="search" onclick="drawTable()">
+
+                </form>
+            </div>
+            <h3>
+                <!-- Tagline -->
+                The Most diverse user over a select period and how many department he bought:&nbsp;</h3>
+            <table id="table1" width="100%" class="table">
+                <thead>
+                <tr>
+                    <th>
+                        User ID
+                    </th>
+                    <th>
+                        Bought Product Num
+                    </th>
+                </tr>
+                </thead>
+
+            </table>
+        </section>
+        <% include('./public/sider.html')%>
+    </div>
+</div>
+<% include('./public/footer.html')%>
+<script>
+    function drawTable(){
+        document.getElementById('table1').innerHTML='<thead>\n' +
+            '        <tr>\n' +
+            '            <th>\n' +
+            '                User ID\n' +
+            '            </th>\n' +
+            '            <th>\n' +
+            '                Bought Product Num\n' +
+            '            </th>\n' +
+            '        </thead>';
+        $.ajax({
+            url:'/TheMLU',
+            type:'post',
+            dataType: 'json',
+            data: $('#form1').serialize()
+        })
+    }
+    $(document).ajaxComplete(function(event, xhr, settings) {
+        var obj = JSON.parse(xhr.responseText);
+        var data=obj.data;
+        for (i=0;i<data.length;i++){
+            var trs= $('<tr></tr>');
+            for(j=0;j<data[i].length;j++){
+                trs.append($('<td>'+data[i][j]+'</td>'));
+            }
+            $('#table1').append(trs);
+        }
+    })
+</script>
+</body>
+</html>

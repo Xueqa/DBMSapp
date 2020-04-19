@@ -1,18 +1,17 @@
 oraclePool=require('./oraclePool');
 sqlCombine=require('./sqlCombine');
-async function topThreeInAisle(ctx, next) {
-    console.log(ctx.request.body)
+async function topFiveInAisle(aisle_name, start_date,end_date) {
     var Obj = {
-        aisle_name: ctx.request.body["aisle_name"],
-        start_date: ctx.request.body['start_date'],
-        end_date: ctx.request.body['end_date']
+        aisle_name,
+        start_date,
+        end_date
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
 
     }
 
-    var sql=sqlCombine.selectBestThreeInOneAisle(Obj.aisle_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.selectBestFiveInOneAisle(Obj.aisle_name,Obj.start_date,Obj.end_date)
 
     var rsp={
         result :[]
@@ -21,6 +20,7 @@ async function topThreeInAisle(ctx, next) {
     try {
 
         rsp.result =await oraclePool.initSql(sql);
+
 
     }
     catch(error) {
@@ -32,8 +32,8 @@ async function topThreeInAisle(ctx, next) {
     //ctx.body=rsp.result;
 }
 
-async function topThreeInDepartment(ctx, next) {
-    console.log(ctx.request.body)
+async function topFiveInDepartment(ctx, next) {
+
     var Obj = {
         department_name: ctx.request.body["department_name"],
         start_date: ctx.request.body['start_date'],
@@ -44,7 +44,7 @@ async function topThreeInDepartment(ctx, next) {
 
     }
 
-    var sql=sqlCombine.selectBestThreeInOneDepartment(Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.selectBestFiveInOneDepartment(Obj.department_name,Obj.start_date,Obj.end_date)
 
     var rsp={
         result :[]
@@ -60,12 +60,12 @@ async function topThreeInDepartment(ctx, next) {
         console.log(error);
 
     }
-    ctx.body = JSON.stringify(rsp.result)
+    return rsp.result;
     //ctx.body=rsp.result;
 }
 
 async function orderCountInAisle(ctx, next) {
-    console.log(ctx.request.body)
+
     var Obj = {
         aisle_name: ctx.request.body["aisle_name"],
         start_date: ctx.request.body['start_date'],
@@ -92,15 +92,15 @@ async function orderCountInAisle(ctx, next) {
         console.log(error);
 
     }
-    ctx.body = JSON.stringify(rsp.result[0])
+    return rsp.result;
     //ctx.body=rsp.result;
 }
 
-async function selectMostLoyalCustomer(ctx, next) {
-    console.log(ctx.request.body)
+async function selectMostLoyalCustomer(start_date,end_date) {
+
     var Obj = {
-        start_date: ctx.request.body['start_date'],
-        end_date: ctx.request.body['end_date']
+        start_date,
+        end_date
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
     }
@@ -121,15 +121,15 @@ async function selectMostLoyalCustomer(ctx, next) {
         console.log(error);
 
     }
-    ctx.body = JSON.stringify(rsp.result)
+    return rsp.result;
     //ctx.body=rsp.result;
 }
 
-async function selectMostDiverseCustomer(ctx, next) {
+async function selectMostDiverseCustomer( start_date,end_date) {
 
     var Obj = {
-        start_date: ctx.request.body['start_date'],
-        end_date: ctx.request.body['end_date']
+        start_date,
+        end_date
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
     }
@@ -150,16 +150,16 @@ async function selectMostDiverseCustomer(ctx, next) {
         console.log(error);
 
     }
-    ctx.body = JSON.stringify(rsp.result)
+    return rsp.result;
     //ctx.body=rsp.result;
 }
 
-async function selectReorderMostCustomer(ctx, next) {
-    console.log(ctx.request.body)
+async function selectReorderMostCustomer(aisle_name, start_date,end_date) {
+
     var Obj = {
-        aisle_name: ctx.request.body["aisle_name"],
-        start_date: ctx.request.body['start_date'],
-        end_date: ctx.request.body['end_date']
+        aisle_name,
+        start_date,
+        end_date
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
@@ -182,51 +182,51 @@ async function selectReorderMostCustomer(ctx, next) {
         console.log(error);
 
     }
-    ctx.body = JSON.stringify(rsp.result)
+    return rsp.result;
     //ctx.body=rsp.result;
 }
 
 function toStr(result){for(i=0;i<result.length;i++){
-    switch (result[i][2]) {
+    switch (result[i][1]) {
         case 1:
-            result[i][2]="Jan";
+            result[i][1]="Jan";
             break;
 
         case 2:
-            result[i][2]="Feb";
+            result[i][1]="Feb";
             break;
         case 3:
-            result[i][2]="Mar";
+            result[i][1]="Mar";
             break;
         case 4:
-            result[i][2]="Apr";
+            result[i][1]="Apr";
             break;
         case 5:
-            result[i][2]="May";
+            result[i][1]="May";
             break;
 
         case 6:
-            result[i][2]="Jun";
+            result[i][1]="Jun";
             break;
         case 7:
-            result[i][2]="Jul";
+            result[i][1]="Jul";
             break;
         case 8:
-            result[i][2]="Aug";
+            result[i][1]="Aug";
             break;
         case 9:
-            result[i][2]="Sep";
+            result[i][1]="Sep";
             break;
         case 10:
-            result[i][2]="Oct";
+            result[i][1]="Oct";
             break;
 
         case 11:
-            result[i][2]="Nov";
+            result[i][1]="Nov";
             break;
 
         case 12:
-            result[i][2]="Dec";
+            result[i][1]="Dec";
             break;
 
         default:
@@ -236,7 +236,7 @@ function toStr(result){for(i=0;i<result.length;i++){
 
 }
 }
-async function productTrendsbyMonth(aisle_name, start_date,end_date) {
+async function productTrendsByMonth(aisle_name, start_date,end_date) {
     var Obj = {
         aisle_name,
         start_date,
@@ -274,7 +274,7 @@ async function productTrendsbyMonth(aisle_name, start_date,end_date) {
 
 }
 
-async function productTrendsbyDay(aisle_name, start_date,end_date) {
+async function productTrendsByDay(aisle_name, start_date,end_date) {
     var Obj = {
         aisle_name,
         start_date,
@@ -338,24 +338,26 @@ async function aisleTrends(ctx, next) {
         console.log(error);
 
     }
-    ctx.body = JSON.stringify(rsp.result)
-    //ctx.body=rsp.result;
+    var result=rsp.result
+
+
+    //console.log(result.length);
+    toStr(result)
+    return result;
 }
 
-async function orderTrends(ctx, next) {
-    console.log(ctx.request.body)
+async function orderTrendsByMonth( start_date,end_date) {
     var Obj = {
-        aisle_name: ctx.request.body["aisle_name"],
-        department_name: ctx.request.body["department_name"],
-        start_date: ctx.request.body['start_date'],
-        end_date: ctx.request.body['end_date']
+
+        start_date,
+        end_date
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
 
     }
 
-    var sql=sqlCombine.orderTrendSql(Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.orderTrendSql(Obj.start_date,Obj.end_date)
 
     var rsp={
         result :[]
@@ -371,24 +373,25 @@ async function orderTrends(ctx, next) {
         console.log(error);
 
     }
-    ctx.body = JSON.stringify(rsp.result)
-    //ctx.body=rsp.result;
+    var result=rsp.result
+
+
+    //console.log(result.length);
+    toStr(result)
+    return result;
 }
 
-async function reorderTrends(ctx, next) {
-    console.log(ctx.request.body)
+async function orderTrendsByDay( start_date,end_date) {
     var Obj = {
-        aisle_name: ctx.request.body["aisle_name"],
-        department_name: ctx.request.body["department_name"],
-        start_date: ctx.request.body['start_date'],
-        end_date: ctx.request.body['end_date']
+        start_date,
+        end_date
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
 
     }
 
-    var sql=sqlCombine.reorderTrendSql(Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.orderTrendSql1(Obj.start_date,Obj.end_date)
 
     var rsp={
         result :[]
@@ -404,25 +407,25 @@ async function reorderTrends(ctx, next) {
         console.log(error);
 
     }
-    ctx.body = JSON.stringify(rsp.result)
-    //ctx.body=rsp.result;
-}
+    var result=rsp.result
 
-async function userTrends(ctx, next) {
-    console.log(ctx.request.body)
+
+    //console.log(result.length);
+    toStr(result)
+    return result;
+}
+async function reorderTrendsByMonth(aisle_name, start_date,end_date) {
     var Obj = {
-        user_id: ctx.request.body["user_id"],
-        aisle_name: ctx.request.body["aisle_name"],
-        department_name: ctx.request.body["department_name"],
-        start_date: ctx.request.body['start_date'],
-        end_date: ctx.request.body['end_date']
+        aisle_name,
+        start_date,
+        end_date
         // aisle_name: 'prepared soups salads',
         // start_date: '2017-01-07 00:00:00',
         // end_date:'2017-09-07 00:00:00'
 
     }
 
-    var sql=sqlCombine.userTrendSql(Obj.user_id,Obj.aisle_name,Obj.department_name,Obj.start_date,Obj.end_date)
+    var sql=sqlCombine.reorderTrendSql(Obj.aisle_name,Obj.start_date,Obj.end_date)
 
     var rsp={
         result :[]
@@ -438,11 +441,122 @@ async function userTrends(ctx, next) {
         console.log(error);
 
     }
-    ctx.body = JSON.stringify(rsp.result)
-    //ctx.body=rsp.result;
+    var result=rsp.result
+
+
+    //console.log(result.length);
+    toStr(result)
+    return result;
 }
 
+async function reorderTrendsByDay(aisle_name, start_date,end_date) {
+    var Obj = {
+        aisle_name,
+        start_date,
+        end_date
+        // aisle_name: 'prepared soups salads',
+        // start_date: '2017-01-07 00:00:00',
+        // end_date:'2017-09-07 00:00:00'
+
+    }
+
+    var sql=sqlCombine.reorderTrendSql1(Obj.aisle_name,Obj.start_date,Obj.end_date)
+
+    var rsp={
+        result :[]
+    }
+
+    try {
+
+        rsp.result =await oraclePool.initSql(sql);
+
+
+    }
+    catch(error) {
+        console.log(error);
+
+    }
+    var result=rsp.result
+
+
+    //console.log(result.length);
+    toStr(result)
+    return result;
+}
+
+async function userTrendsByMonth(user_id, start_date,end_date) {
+    var Obj = {
+        user_id,
+        start_date,
+        end_date
+        // aisle_name: 'prepared soups salads',
+        // start_date: '2017-01-07 00:00:00',
+        // end_date:'2017-09-07 00:00:00'
+
+    }
+
+    var sql=sqlCombine.userTrendSql(Obj.user_id,Obj.start_date,Obj.end_date)
+
+    var rsp={
+        result :[]
+    }
+
+    try {
+
+        rsp.result =await oraclePool.initSql(sql);
+
+
+    }
+    catch(error) {
+        console.log(error);
+
+    }
+    var result=rsp.result
+
+
+    //console.log(result.length);
+    toStr(result)
+    return result;
+
+}
+
+async function userTrendsByDay(user_id, start_date,end_date) {
+    var Obj = {
+        user_id,
+        start_date,
+        end_date
+        // aisle_name: 'prepared soups salads',
+        // start_date: '2017-01-07 00:00:00',
+        // end_date:'2017-09-07 00:00:00'
+
+    }
+
+    var sql=sqlCombine.userTrendSql1(Obj.user_id,Obj.start_date,Obj.end_date)
+
+    var rsp={
+        result :[]
+    }
+
+    try {
+
+        rsp.result =await oraclePool.initSql(sql);
+
+
+    }
+    catch(error) {
+        console.log(error);
+
+    }
+    var result=rsp.result
+
+
+    //console.log(result.length);
+    toStr(result)
+    return result;
+
+}
 module.exports={
-    topThreeInAisle,topThreeInDepartment,orderCountInAisle,selectMostLoyalCustomer,selectMostDiverseCustomer,
-    selectReorderMostCustomer,aisleTrends,productTrendsbyMonth,orderTrends,reorderTrends,userTrends,productTrendsbyDay
+    topFiveInAisle,topFiveInDepartment,orderCountInAisle,selectMostLoyalCustomer,selectMostDiverseCustomer,
+    selectReorderMostCustomer,aisleTrends,productTrendsByMonth,orderTrendsByMonth,reorderTrendsByMonth,userTrendsByMonth,productTrendsByDay,orderTrendsByDay,
+    reorderTrendsByDay,userTrendsByDay
 }
