@@ -19,56 +19,68 @@ function selectAll(tables,attribute){
 }
 
 function selectBestFiveInOneAisle(aisle_name,start_date,end_date){
-    var selectSql=sql.select('Zeyuan.products.product_name,Zeyuan.products.product_id,Zeyuan.aisles.aisle_name,Zeyuan.departments.department_id');
-    var fromSql=sql.from('ZEYUAN.products,ZEYUAN.put_on,ZEYUAN.aisles,Zeyuan.departments,zeyuan.belong_to');
+    sqlquery=' select * from ('
+    var selectSql=sql.select('Zeyuan.products.product_name,Zeyuan.products.product_id,Zeyuan.aisles.aisle_name,Zeyuan.departments.department_name,count(*)');
+    var fromSql=sql.from('ZEYUAN.products,ZEYUAN.put_on,ZEYUAN.aisles,Zeyuan.departments,zeyuan.belong_to,ZEYUAN.ORDERS,ZEYUAN.CONTAIN');
     var whereSql=" where Zeyuan.aisles.aisle_name='"+aisle_name;
     var whereSql1="' and Zeyuan.products.product_id=Zeyuan.put_on.product_id ";
+    whereSql1+='and Zeyuan.orders.order_id=Zeyuan.contain.order_id ';
+    whereSql1+='and Zeyuan.contain.product_id=Zeyuan.products.product_id '
     whereSql1+='and Zeyuan.aisles.aisle_id=Zeyuan.put_on.aisle_id '
     whereSql1+='and Zeyuan.products.product_id=Zeyuan.belong_to.product_id ';
     whereSql1+='and Zeyuan.departments.department_id=Zeyuan.belong_to.department_id ';
+    whereSql1+="and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss') ";
+    whereSql1+="and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss') ";
     whereSql1+='and Zeyuan.products.product_id in ';
     whereSql1+='(select Zeyuan.contain.product_id from Zeyuan.contain,Zeyuan.orders '
     whereSql1+='where zeyuan.contain.order_id=zeyuan.orders.order_id '
     whereSql1+="and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss') ";
-    whereSql1+="and zeyuan.orders.order_date>= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')) ";
-    whereSql1+='and rownum<=5 group by Zeyuan.products.product_name,Zeyuan.products.product_id,Zeyuan.aisles.aisle_name,Zeyuan.departments.department_id  order by count(*) desc';
-    const sqlquery=selectSql+fromSql+whereSql+whereSql1;
+    whereSql1+="and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')) ";
+    whereSql1+='group by Zeyuan.products.product_name,Zeyuan.products.product_id,Zeyuan.aisles.aisle_name,Zeyuan.departments.department_name  order by count(*) desc) ';
+    whereSql1+='where rownum<=5 '
+    sqlquery+=selectSql+fromSql+whereSql+whereSql1;
     console.log(sqlquery);
     return sqlquery;
 }
 
 function selectBestFiveInOneDepartment(department_name,start_date,end_date){
-    var selectSql=sql.select('Zeyuan.products.product_name,Zeyuan.products.product_id,Zeyuan.aisles.aisle_name,Zeyuan.departments.department_id');
-    var fromSql=sql.from('ZEYUAN.products,ZEYUAN.belong_to,ZEYUAN.departments,ZEYUAN.put_on,ZEYUAN.aisles');
+    sqlquery=' select * from ('
+    var selectSql=sql.select('Zeyuan.products.product_name,Zeyuan.products.product_id,Zeyuan.aisles.aisle_name,Zeyuan.departments.department_name,count(*)');
+    var fromSql=sql.from('ZEYUAN.products,ZEYUAN.belong_to,ZEYUAN.departments,ZEYUAN.put_on,ZEYUAN.aisles,Zeyuan.orders,Zeyuan.contain');
     var whereSql=" where Zeyuan.departments.department_name='"+department_name;
     var whereSql1="' and Zeyuan.products.product_id=Zeyuan.belong_to.product_id ";
+    whereSql1+='and Zeyuan.orders.order_id=Zeyuan.contain.order_id ';
+    whereSql1+='and Zeyuan.contain.product_id=Zeyuan.products.product_id '
     whereSql1+='and Zeyuan.departments.department_id=Zeyuan.belong_to.department_id '
     whereSql1+='and Zeyuan.aisles.aisle_id=Zeyuan.put_on.aisle_id '
+    whereSql1+="and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss') ";
+    whereSql1+="and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss') ";
     whereSql1+='and Zeyuan.put_on.product_id=Zeyuan.products.product_id '
     whereSql1+='and Zeyuan.products.product_id in ';
     whereSql1+='(select Zeyuan.contain.product_id from Zeyuan.contain,Zeyuan.orders '
     whereSql1+='where zeyuan.contain.order_id=zeyuan.orders.order_id '
     whereSql1+="and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss') ";
-    whereSql1+="and zeyuan.orders.order_date>= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')) ";
-    whereSql1+='and rownum<=5 group by Zeyuan.products.product_name,Zeyuan.products.product_id,Zeyuan.aisles.aisle_name,Zeyuan.departments.department_id  order by count(*) desc';
-    const sqlquery=selectSql+fromSql+whereSql+whereSql1;
+    whereSql1+="and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')) ";
+    whereSql1+='group by Zeyuan.products.product_name,Zeyuan.products.product_id,Zeyuan.aisles.aisle_name,Zeyuan.departments.department_name  order by count(*) desc) where rownum<=5';
+    sqlquery+=selectSql+fromSql+whereSql+whereSql1;
     console.log(sqlquery);
     return sqlquery;
 }
 
 function selectMostOrderUser(start_date,end_date){
-    var selectSql=sql.select('Zeyuan.make.user_id');
+    sqlquery='select * from ('
+    var selectSql=sql.select('distinct Zeyuan.make.user_id,count(*)');
     var fromSql=sql.from('Zeyuan.make,Zeyuan.orders');
     whereSql=' where Zeyuan.make.order_id=Zeyuan.orders.order_id';
     whereSql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
     whereSql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
-    whereSql+=' group by Zeyuan.make.user_id';
-    whereSql+=' having count(*) = (select max(count(*)) from Zeyuan.make,Zeyuan.orders';
+    whereSql+=' and user_id in (select distinct user_id from Zeyuan.make,Zeyuan.orders';
     whereSql+=' where Zeyuan.make.order_id=Zeyuan.orders.order_id ';
     whereSql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
-    whereSql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
-    whereSql+=' group by Zeyuan.make.user_id)'
-    const sqlquery=selectSql+fromSql+whereSql;
+    whereSql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss'))";
+    whereSql+=' group by Zeyuan.make.user_id order by count(*) desc) where rownum<=5'
+    sqlquery+=selectSql+fromSql+whereSql;
+    console.log(sqlquery);
     return sqlquery;
 }
 function orderNumberForAisle(aisle_name,start_date,end_date){
@@ -76,6 +88,8 @@ function orderNumberForAisle(aisle_name,start_date,end_date){
     var fromSql=sql.from('Zeyuan.products,zeyuan.orders,zeyuan.contain');
     var whereSql=' where zeyuan.products.product_id=zeyuan.contain.product_id';
     whereSql+=' and zeyuan.orders.order_id=zeyuan.contain.order_id';
+    whereSql+=" and zeyuan.orders.order_date>= to_date('"+start_date+"','yyyy-mm-dd hh24:mi:ss')";
+    whereSql+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
     whereSql+=' and zeyuan.products.product_id in';
     whereSql+=' (select Zeyuan.products.product_id from zeyuan.products,zeyuan.put_on,zeyuan.aisles';
     whereSql+=' where zeyuan.aisles.aisle_id=zeyuan.put_on.aisle_id';
@@ -110,14 +124,14 @@ function selectOrderEveryDepartUser(start_date,end_date){
     sqlquery+=" and zeyuan.orders.order_date<= to_date('"+end_date+"','yyyy-mm-dd hh24:mi:ss')";
     sqlquery+=' group by Zeyuan.make.user_id';
     sqlquery+=' order by Totalnumber desc) '
-    sqlquery+=' where Totalnumber>=20'
+    sqlquery+=' where rownum<=10'
     console.log(sqlquery);
     return sqlquery;
 }
 
 function selectReorderMostUser(aisle_name,start_date,end_date){
     sqlquery='SELECT * ';
-    sqlquery+='FROM (SELECT USER_ID, COUNT(*)) as Totalnumber ';
+    sqlquery+='FROM (SELECT USER_ID, COUNT(*) as Totalnumber ';
     sqlquery+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN ';
     sqlquery+='"ZEYUAN"."CONTAIN"  NATURAL JOIN ';
     sqlquery+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN ';
@@ -265,8 +279,131 @@ function userTrendSql1(user_id,start_date,end_date){
     return sql;
 
 }
+
+function recommendProductSql(aisle_name){
+    sql='select (cast( Probability as decimal(10,3))) as Probability, product_name ';
+    sql+='from(select count(*)/(max(count(*)) over()) as Probability, product_name ';
+    sql+='from (select  p.product_name, c.add_to_cart_order, o.order_id ';
+    sql+='from Zeyuan.orders o, Zeyuan.contain c, Zeyuan.make m, Zeyuan.users u, Zeyuan.products p ';
+    sql+='where o.order_id = c.order_id and ';
+    sql+='c.product_id = p.product_id and ';
+    sql+='m.order_id = o.order_id and ';
+    sql+='m.user_id = u.user_id and ';
+    sql+='u.user_id in ';
+    sql+='(select user_id ';
+    sql+='from (select * ';
+    sql+='from(select u.user_id, count(*) as TotalOrders ';
+    sql+='from Zeyuan.orders o, Zeyuan.users u, Zeyuan.make m ';
+    sql+='where o.order_id = m.order_id and m.user_id = u.user_id ';
+    sql+='group by u.user_id ';
+    sql+='order by TotalOrders desc) ';
+    sql+='where TotalOrders >=50)) and  ';
+    sql+='o.order_id in (select o.order_id ';
+    sql+='from Zeyuan.orders o, Zeyuan.contain c, Zeyuan.products p ';
+    sql+='where o.order_id = c.order_id and ';
+    sql+='p.product_id = c.product_id and ';
+    sql+='p.product_name = (select product_name ';
+    sql+='from (select * ';
+    sql+=' from(select  p.product_name,  count(*) as TotalFirstNum ';
+    sql+='from Zeyuan.orders o, Zeyuan.contain c, Zeyuan.products p, Zeyuan.put_on po,Zeyuan.aisles a ';
+    sql+='where o.order_id = c.order_id and ';
+    sql+='p.product_id = c.product_id and ';
+    sql+='c.add_to_cart_order = 1 and ';
+    sql+='a.aisle_id=po.aisle_id and ';
+    sql+='po.product_id=p.product_id and ';
+    sql+="a.aisle_name='"+aisle_name+"' ";
+    sql+='group by p.product_name ';
+    sql+='order by count(*) desc) ';
+    sql+='where rownum <= 10) ';
+    sql+='where  rownum <= 1))) ';
+    sql+='group by product_name ';
+    sql+='order by Probability desc) ';
+    sql+='where rownum <= 11'
+    console.log(sql);
+    return sql;
+
+}
+
+function onlyIncreasingProduct(aisle_name,start_date,end_date){
+    sql='select distinct p.product_id, p.product_name, a.aisle_name, d.department_name ';
+    sql+='from Zeyuan.products p, Zeyuan.aisles a, Zeyuan.put_on po, Zeyuan.belong_to b,Zeyuan.departments d '
+    sql+='where po.aisle_id=a.aisle_id and ';
+    sql+='b.department_id= d.department_id and ';
+    sql+='b.product_id= p.product_id and ';
+    sql+='po.product_id=p.product_id and ';
+    sql+='product_name in '
+    sql+='((select distinct product_name from (select (TotalNumber- LAG1)as ind, product_name ';
+    sql+='from(select  TotalNumber, product_name,months, to_number(TO_CHAR(LAG(TotalNumber,1) OVER (ORDER BY product_name, months))) AS LAG1 ';
+    sql+='from(select count(*) as TotalNumber, p.product_name, EXTRACT(MONTH FROM order_date) AS months ';
+    sql+='from Zeyuan.orders o, Zeyuan.contain c, Zeyuan.products p, Zeyuan.put_on  po, Zeyuan.aisles a ';
+    sql+='where  o.order_id = c.order_id and  ';
+    sql+='p.product_id = c.product_id and ';
+    sql+='po.aisle_id = a.aisle_id and ';
+    sql+="a.aisle_name = '"+aisle_name+"' and ";
+    sql+='po.product_id = p.product_id and ' ;
+    sql+='p.product_name in (select product_name ';
+    sql+='from(select product_name, count(*) ';
+    sql+='from (select count(*) as TotalNumber,  p.product_name, EXTRACT(MONTH FROM order_date) AS months ';
+    sql+='from Zeyuan.orders o, Zeyuan.contain c, Zeyuan.products p, Zeyuan.put_on  po, Zeyuan.aisles a ';
+    sql+='where  o.order_id = c.order_id and  ';
+    sql+=' p.product_id = c.product_id and ';
+    sql+='po.aisle_id = a.aisle_id and  ';
+    sql+="a.aisle_name = '"+aisle_name+"' and ";
+    sql+=' EXTRACT(MONTH FROM order_date) <> 1 and EXTRACT(MONTH FROM order_date) between '+start_date+' and '+end_date;
+    sql+=' and po.product_id = p.product_id ';
+    sql+='group by p.product_name, EXTRACT(MONTH FROM order_date) ';
+    sql+='order by p.product_name, months) ';
+    sql+='group by product_name ';
+    sql+='having count(*) = '+end_date+'-'+start_date+'+1)) ';
+    sql+='group by p.product_name, EXTRACT(MONTH FROM order_date) ';
+    sql+='order by p.product_name, months)) ';
+    sql+='where months <> 1 and months between '+start_date+' and '+end_date+')) minus (select distinct  product_name ';
+    sql+=' from (select (TotalNumber- LAG1)as ind, product_name ';
+    sql+='from(select  TotalNumber, product_name,months, to_number(TO_CHAR(LAG(TotalNumber,1) OVER (ORDER BY product_name, months))) AS LAG1 ';
+    sql+='from(select count(*) as TotalNumber, p.product_name, EXTRACT(MONTH FROM order_date) AS months ';
+    sql+='from Zeyuan.orders o, Zeyuan.contain c, Zeyuan.products p, Zeyuan.put_on  po, Zeyuan.aisles a ';
+    sql+='where  o.order_id = c.order_id and ';
+    sql+='p.product_id = c.product_id and  ';
+    sql+='po.aisle_id = a.aisle_id and  ';
+    sql+="a.aisle_name = '"+aisle_name+"' and ";
+    sql+=' po.product_id = p.product_id and ';
+    sql+='p.product_name in (select product_name ';
+    sql+='from(select product_name, count(*) ';
+    sql+='from (select count(*) as TotalNumber,  p.product_name, EXTRACT(MONTH FROM order_date) AS months ';
+    sql+='from Zeyuan.orders o, Zeyuan.contain c, Zeyuan.products p, Zeyuan.put_on  po, Zeyuan.aisles a ';
+    sql+='where  o.order_id = c.order_id and ';
+    sql+='p.product_id = c.product_id and ';
+    sql+='po.aisle_id = a.aisle_id and ';
+    sql+="a.aisle_name = '"+aisle_name+"' and ";
+    sql+=' EXTRACT(MONTH FROM order_date) <> 1 and EXTRACT(MONTH FROM order_date) between '+start_date+' and '+end_date;
+    sql+=' and po.product_id = p.product_id ';
+    sql+='group by p.product_name, EXTRACT(MONTH FROM order_date) ';
+    sql+='order by p.product_name, months) ';
+    sql+='group by product_name ';
+    sql+='having count(*) = '+end_date+'-'+start_date+'+1)) ';
+    sql+='group by p.product_name, EXTRACT(MONTH FROM order_date) ';
+    sql+='order by p.product_name, months)) ';
+    sql+='where months <> 1 and months between '+start_date+' and '+end_date+') ';
+    sql+='where ind < 0))';
+    console.log(sql);
+    return sql;
+}
+
+function increasingCountSql1(product_name,start_date,end_date){
+    sql='SELECT COUNT(*) as Totalnumber, EXTRACT(MONTH FROM ORDER_DATE) as Month ';
+    sql+='FROM "ZEYUAN"."ORDERS" NATURAL JOIN "ZEYUAN"."CONTAIN"  NATURAL JOIN '
+    sql+='"ZEYUAN"."BELONG_TO"  NATURAL JOIN "ZEYUAN"."PUT_ON" NATURAL JOIN "ZEYUAN"."PRODUCTS"  NATURAL JOIN '
+    sql+='"ZEYUAN"."DEPARTMENTS"  NATURAL JOIN "ZEYUAN"."AISLES" ';
+    sql+="where product_name='"+product_name+"'";
+    sql+=" and EXTRACT(MONTH FROM order_date) between "+start_date+' and '+end_date;
+    sql+=' GROUP BY EXTRACT(MONTH FROM ORDER_DATE) ORDER BY EXTRACT(MONTH FROM ORDER_DATE)';
+    console.log(sql);
+    return sql;
+
+}
 module.exports={
     topKSql,selectAll,selectBestFiveInOneAisle,orderNumberOfMonth,selectBestFiveInOneDepartment,orderNumberForAisle,
     selectMostOrderUser,selectOrderEveryDepartUser,selectReorderMostUser,aisleTrendSql,productTrendSql,
-    orderTrendSql,reorderTrendSql,userTrendSql,productTrendSql1,orderTrendSql1,reorderTrendSql1,userTrendSql1
+    orderTrendSql,reorderTrendSql,userTrendSql,productTrendSql1,orderTrendSql1,reorderTrendSql1,userTrendSql1,
+    recommendProductSql,onlyIncreasingProduct,increasingCountSql1
 };

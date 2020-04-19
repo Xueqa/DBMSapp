@@ -16,7 +16,9 @@ router.post('/result/selectmostloyalcustomer',funcs.selectMostLoyalCustomer);// 
 router.post('/result/selectreordermostcustomer',funcs.selectReorderMostCustomer);// query7 reoder user
 router.post('/result/selectmostdiversecustomer',funcs.selectMostDiverseCustomer);//query 8 most diverse
 router.post('/result/ordercountinaisle',funcs.orderCountInAisle);//query 9 order count
-
+router.post('/result/youMightLike',funcs.youMightLike);//query 10 youMightLike
+router.post('/result/IncreasingProduct',funcs.IncreasingProduct);//query 11 increasing Product
+router.post('/result/IncreasingProductCount',funcs.IncreasingProductCount);//query 11 increasing Product Count
 
 
 
