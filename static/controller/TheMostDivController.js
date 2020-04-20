@@ -6,7 +6,7 @@ const funcs=require('../../funcs');
 async function getfunc(ctx, next) {
     //console.log(aisle);
     await ctx.render('TheMostDivUser');
-    next();
+
 }
 
 async function postfunc(ctx,next){
@@ -18,7 +18,7 @@ async function postfunc(ctx,next){
     ctx.body = JSON.stringify(message);
     //await ctx.redirect('/bestSeller');
 
-    next();
+
 }
 module.exports={
     getfunc,postfunc

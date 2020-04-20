@@ -555,8 +555,109 @@ async function userTrendsByDay(user_id, start_date,end_date) {
     return result;
 
 }
+async function IncreasingProduct(aisle_name, start_date,end_date) {
+    var Obj = {
+        aisle_name,
+        start_date,
+        end_date
+        // aisle_name: 'prepared soups salads',
+        // start_date: '2017-01-07 00:00:00',
+        // end_date:'2017-09-07 00:00:00'
+
+    }
+    var s_date=start_date.toString().split('-');
+    var e_date=end_date.toString().split('-');
+    var sql=sqlCombine.onlyIncreasingProduct(Obj.aisle_name,s_date[1],e_date[1])
+
+    var rsp={
+        result:[]
+    }
+
+    try {
+
+        rsp.result =await oraclePool.initSql(sql);
+
+
+    }
+    catch(error) {
+        console.log(error);
+
+    }
+    var result=rsp.result
+
+
+    //console.log(result.length);
+    return result;
+}
+async function IncreasingProductCount(product_id, start_date,end_date) {
+
+    var Obj = {
+        product_id,
+        start_date,
+        end_date
+        // aisle_name: 'prepared soups salads',
+        // start_date: '2017-01-07 00:00:00',
+        // end_date:'2017-09-07 00:00:00'
+
+    }
+    var s_date=start_date.toString().split('-');
+    var e_date=end_date.toString().split('-');
+    var sql=sqlCombine.increasingCountSql1(Obj.product_id,s_date[1],e_date[1])
+
+    var rsp={
+        result:[]
+    }
+
+    try {
+
+        rsp.result =await oraclePool.initSql(sql);
+
+
+    }
+    catch(error) {
+        console.log(error);
+
+    }
+    var result=rsp.result
+
+
+    //console.log(result.length);
+    toStr(result)
+    return result;
+}
+async function youMightLike(aisle_name) {
+    var Obj = {
+        aisle_name
+        // aisle_name: 'prepared soups salads',
+        // start_date: '2017-01-07 00:00:00',
+        // end_date:'2017-09-07 00:00:00'
+
+    }
+
+    var sql=sqlCombine.recommendProductSql(Obj.aisle_name)
+
+    var rsp={
+        result:[]
+    }
+
+    try {
+
+        rsp.result =await oraclePool.initSql(sql);
+
+
+    }
+    catch(error) {
+        console.log(error);
+
+    }
+    var result=rsp.result;
+    return result;
+    //ctx.body = JSON.stringify(rsp.result)
+    //ctx.body=rsp.result;
+}
 module.exports={
     topFiveInAisle,topFiveInDepartment,orderCountInAisle,selectMostLoyalCustomer,selectMostDiverseCustomer,
     selectReorderMostCustomer,aisleTrends,productTrendsByMonth,orderTrendsByMonth,reorderTrendsByMonth,userTrendsByMonth,productTrendsByDay,orderTrendsByDay,
-    reorderTrendsByDay,userTrendsByDay
+    reorderTrendsByDay,userTrendsByDay,youMightLike,IncreasingProduct,IncreasingProductCount
+
 }

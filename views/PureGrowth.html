@@ -34,7 +34,7 @@
             </div>
             <h3>
                 <!-- Tagline -->
-                Best sellers:&nbsp;</h3>
+                Products which purely increase in selected period:&nbsp;</h3>
             <table id="table1" width="100%" class="table">
                 <thead>
                 <tr>
@@ -57,6 +57,7 @@
         </section>
         <% include('./public/sider.html')%>
     </div>
+
 </div>
 <% include('./public/footer.html')%>
 <script>
@@ -78,23 +79,28 @@
             '        </tr>\n' +
             '        </thead>';
         $.ajax({
-            url:'/bestSeller',
+            url:'/PureGrowth',
             type:'post',
             dataType: 'json',
             data: $('#form1').serialize()
         })
     }
+
     $(document).ajaxComplete(function(event, xhr, settings) {
         var obj = JSON.parse(xhr.responseText);
         var data=obj.data;
         for (i=0;i<data.length;i++){
             var trs= $('<tr></tr>');
-            for(j=0;j<data[i].length;j++){
+            trs.append($('<td><a target="view_window" href="/PureGrowthView" >'+data[i][0]+'</a></td>'));
+            for(j=1;j<data[i].length;j++){
                 trs.append($('<td>'+data[i][j]+'</td>'));
             }
+
             $('#table1').append(trs);
         }
     })
+
+
 </script>
 </body>
 </html>

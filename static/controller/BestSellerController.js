@@ -9,7 +9,6 @@ async function getfunc(ctx, next) {
     await ctx.render('BestSeller',{
         aisle:aisle
     });
-    next();
 }
 
 async function postfunc(ctx,next){
@@ -20,8 +19,6 @@ async function postfunc(ctx,next){
     var message={data: result};
     ctx.body = JSON.stringify(message);
     //await ctx.redirect('/bestSeller');
-
-    next();
 }
 module.exports={
     getfunc,postfunc

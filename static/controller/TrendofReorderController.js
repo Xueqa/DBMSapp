@@ -10,7 +10,7 @@ async function getfunc(ctx, next) {
     await ctx.render('TrendofReorder',{
         aisle:aisle
     });
-    next();
+
 }
 
 async function postfunc(ctx,next){
@@ -47,7 +47,6 @@ async function postfunc(ctx,next){
     console.log(xAxis);
     var message= {xAxis:xAxis,data:data,title:title}
     ctx.body=JSON.stringify(message);
-    next();
 }
 module.exports={
     getfunc,postfunc

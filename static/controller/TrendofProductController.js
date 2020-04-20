@@ -9,7 +9,7 @@ async function getfunc(ctx, next) {
     await ctx.render('TrendofProductNumInAisle',{
         aisle:aisle
     });
-    next();
+
 }
 
 async function postfunc(ctx,next){
@@ -41,12 +41,11 @@ async function postfunc(ctx,next){
     }
     console.log(result);
 
-
     console.log(data);
     console.log(xAxis);
     var message= {xAxis:xAxis,data:data,title:title}
     ctx.body=JSON.stringify(message);
-    next();
+
 }
 module.exports={
     getfunc,postfunc

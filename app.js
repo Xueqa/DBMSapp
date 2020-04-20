@@ -26,6 +26,8 @@ const TrendofOrderUserController=require('./static/controller/TrendofOrderUserCo
 const TheMostDivController=require('./static/controller/TheMostDivController');
 const TheMostLoyalController=require('./static/controller/TheMostLoyalController');
 const PureGrowthController=require('./static/controller/PureGrowthController');
+const PureGrowthViewController=require('./static/controller/PureGrowthViewController');
+const RecommendController=require('./static/controller/RecommendController');
 
 
 router.get('/',async (ctx,next)=>{
@@ -69,7 +71,13 @@ router.post('/TheMLU',TheMostLoyalController.postfunc);
 router.get('/PureGrowth',PureGrowthController.getfunc);
 router.post('/PureGrowth',PureGrowthController.postfunc);
 
-app.use(bodyParser())
+router.get('/Recommend',RecommendController.getfunc);
+router.post('/Recommend',RecommendController.postfunc);
+
+router.get('/PureGrowthView',PureGrowthViewController.getfunc);
+router.post('/PureGrowthView',PureGrowthViewController.postfunc);
+
+app.use(bodyParser());
 app.use(router.routes());
 
 render(app, {

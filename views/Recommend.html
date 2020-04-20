@@ -5,8 +5,9 @@
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="link_css.css" rel="stylesheet" type="text/css">
-    <script src="TheMostLoyalController.js"></script>
+    <script src="RecommendController.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 </head>
 <body>
 <% include('./public/header.html')%>
@@ -15,10 +16,13 @@
         <section id="mainContent">
             <div id="param">
                 <form id="form1" onsubmit="return false" action="##" method="post" class="form-horizontal">
-                    <a> Start Date: </a>
-                    <input type="date" name="start_date" value="2017-06-01" min="2017-01-01" max="2017-12-31"/>
-                    <a> End Date: </a>
-                    <input type="date" name="end_date" value="2017-08-01" min="2017-01-01" max="2017-12-31"/>
+                    <a> Aisle: </a>
+                    <select id="aisle" name="aisle_name">
+
+                        <% aisle.forEach(function(aisle){%>
+                        <option><%=aisle[0]%></option>
+                        <% }) %>
+                    </select>
                     <a></a>
                     <input  type="button" value="search" onclick="drawTable()">
 
@@ -26,16 +30,15 @@
             </div>
             <h3>
                 <!-- Tagline -->
-                The most loyal customers (made the most orders) during a selected time period:
-                &nbsp;</h3>
+                Best sellers:&nbsp;</h3>
             <table id="table1" width="100%" class="table">
                 <thead>
                 <tr>
                     <th>
-                        User ID
+                        Product Name
                     </th>
                     <th>
-                        Bought Product Num
+                        Probability
                     </th>
                 </tr>
                 </thead>
@@ -51,14 +54,15 @@
         document.getElementById('table1').innerHTML='<thead>\n' +
             '        <tr>\n' +
             '            <th>\n' +
-            '                User ID\n' +
+            '                Product Name\n' +
             '            </th>\n' +
             '            <th>\n' +
-            '                Bought Product Num\n' +
+            '                Probability\n' +
             '            </th>\n' +
+            '        </tr>\n' +
             '        </thead>';
         $.ajax({
-            url:'/TheMLU',
+            url:'/Recommend',
             type:'post',
             dataType: 'json',
             data: $('#form1').serialize()

@@ -9,7 +9,6 @@ var start_date='2017-01-07 00:00:00';
 var end_date='2017-09-07 00:00:00';
 var method='selectBestThreeInOneAisle';
 
-const sql1=sqlCombine.topKSql(tables,attribute,id,k);
 
 var initPool=async function(){
     try{
@@ -20,7 +19,7 @@ var initPool=async function(){
                 connectString:"oracle.cise.ufl.edu/orcl",
                 poolAlias: "xrc"
           });
-         
+
     }
     catch(err){
         console.log(err.message)
@@ -40,7 +39,7 @@ var executeSql = async function (sql1) {
     catch(err){
         console.log(err.message)
     }
-  
+
   };
 
 

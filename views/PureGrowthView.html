@@ -5,7 +5,7 @@
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="link_css.css" rel="stylesheet" type="text/css">
-    <script src="TrendofProductController.js"></script>
+    <script src="PureGrowthViewController.js"></script>
     <script src="highcharts.js"></script>
     <script src="modules/exporting.js"></script>
     <script src="modules/export-data.js"></script>
@@ -17,31 +17,9 @@
 <div id="mainwrapper">
     <div id="content">
         <section id="mainContent">
-            <div id="param">
-                <form id="form1" class="form-horizontal">
-                    <a> Aisle: </a>
-                    <select id="aisle" name="aisle_name">
-
-                        <% aisle.forEach(function(aisle){%>
-                        <option><%=aisle[0]%></option>
-                        <% }) %>
-                    </select>
-
-                    <a> Start Date: </a>
-                    <input type="date" name="start_date" value="2017-06-01" min="2017-01-01" max="2017-12-31"/>
-                    <a> End Date: </a>
-                    <input type="date" name="end_date" value="2017-08-01" min="2017-01-01" max="2017-12-31"/>
-                    <a></a>
-                    <select id="method" name="method">
-                        <option value="byMonth">By Month</option>
-                        <option value="byDay">By Day</option>
-                    </select>
-                    <input  type="button" value="search" onclick="drawChart()">
-                </form>
-            </div>
             <h3>
                 <!-- Tagline -->
-                The trend of reorders in a selected aisle over a selected time period :
+                The trend of the total number of sold products in a selected aisle over a selected time period:
                 &nbsp;</h3>
             <figure class="highcharts-figure">
                 <div id="container"></div>
@@ -65,7 +43,7 @@
         xAxis: [],
         yAxis: {
             title: {
-                text: 'Total number of Reorders'
+                text: 'Total number of sold products'
             }
         },
         plotOptions: {
@@ -78,18 +56,8 @@
         },
         series: []
     }
-    function drawChart(){
-        document.getElementById('container').innerHTML='';
-        option.xAxis=[];
-        option.title={text:''};
-        option.series=[];
-        $.ajax({
-            url:'/trendofRe',
-            type:'post',
-            dataType: 'json',
-            data: $('#form1').serialize()
-        })
-    }
+    $(document).ready(drawChart())
+
     $(document).ajaxComplete(function(event, xhr, settings) {
         var obj = JSON.parse(xhr.responseText);
         var data = obj.data;
@@ -98,6 +66,15 @@
         option.series.push({ data:data});
         Highcharts.chart('container', option);
     })
+
+    function drawChart(){
+        $.ajax({
+            url:'/PureGrowthView',
+            type:'post',
+            dataType: 'json',
+            data: {product_id:43002,start_date:'2017-06-01',end_date:'2017-08-01'}
+        })
+    }
 </script>
 </body>
 </html>

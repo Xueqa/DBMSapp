@@ -3,7 +3,6 @@
 async function getfunc(ctx,next) {
     await ctx.render("highchartsTest");
 
-    next();
 }
 
 async function postfunc(ctx,next) {
